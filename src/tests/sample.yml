@@ -1,0 +1,15 @@
+env:
+  base_url: "https://jsonplaceholder.typicode.com"
+
+tests: 
+  - name: Get a post
+    method: GET
+    url: "{base_url}/posts/1"
+    expect:
+      status: 200
+
+  - name: Get invalid post
+    method: GET
+    url: "{base_url}/posts/9999"
+    expect:
+      status: 404
