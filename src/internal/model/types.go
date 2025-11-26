@@ -6,10 +6,9 @@ type TestSuite struct {
 }
 
 type APITest struct {
-	Name   string      `yaml:"name"`
-	Method string      `yaml:"method"`
-	URL    string      `yaml:"url"`
-	Expect Expectation `yaml:"expect"`
+	Name    string `yaml:"name"`
+	Request HttpRequest
+	Expect  Expectation `yaml:"expect"`
 }
 
 type Expectation struct {

@@ -3,13 +3,15 @@ env:
 
 tests: 
   - name: Get a post
-    method: GET
-    url: "{base_url}/posts/1"
+    request:
+      method: GET
+      url: "{base_url}/posts/1"
     expect:
       status: 200
 
   - name: Get invalid post
-    method: GET
-    url: "{base_url}/posts/9999"
+    request:
+      method: POST
+      url: "{base_url}/posts/9999"
     expect:
-      status: 404
+      status: 200

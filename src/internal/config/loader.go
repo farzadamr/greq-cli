@@ -1,4 +1,4 @@
-package parser
+package config
 
 import (
 	"fmt"
@@ -22,9 +22,8 @@ func LoadSuite(path string) (*model.TestSuite, error) {
 	}
 
 	for i, _ := range suite.Tests {
-		suite.Tests[i].URL = replaceVars(suite.Tests[i].URL, suite.Env)
+		suite.Tests[i].Request.URL = replaceVars(suite.Tests[i].Request.URL, suite.Env)
 	}
-
 	return &suite, nil
 }
 
