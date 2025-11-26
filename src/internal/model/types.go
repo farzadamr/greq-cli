@@ -1,17 +1,32 @@
 package model
 
-type TestSuite struct {
-	Env   map[string]string `yaml:"env"`
-	Tests []APITest         `yaml:"tests"`
+type SuiteFile struct {
+	Version string
+	Env     map[string]string
+	Vars    map[string]string
+	Global  GlobalConfig
+	Suites  []Suite
 }
 
-type APITest struct {
-	Name    string `yaml:"name"`
-	Request HttpRequest
-	Expect  Expectation `yaml:"expect"`
+type GlobalConfig struct {
+	Timeout int64
+	Headers map[string]string
 }
 
-type Expectation struct {
-	Status   int    `yaml:"status"`
-	Contains string `yaml:"contains,omitempty"`
+type Suite struct {
+	Tag   string
+	Tests []Test
+}
+
+type Test struct {
+	Method string
+	Path   string
+	Body   any
+	Save   map[string]string
+	Assert Assert
+}
+
+type Assert struct {
+	Status   int
+	Contains []string
 }

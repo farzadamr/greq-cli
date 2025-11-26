@@ -2,35 +2,29 @@ package config
 
 import (
 	"fmt"
-	"strings"
+	"os"
 
 	"github.com/farzadamr/greq-cli/internal/model"
-	"github.com/spf13/viper"
+	"go.yaml.in/yaml/v3"
 )
 
-func LoadSuite(path string) (*model.TestSuite, error) {
-	v := viper.New()
-	v.SetConfigFile(path)
-
-	if err := v.ReadInConfig(); err != nil {
+func Load(path string) (*model.SuiteFile, error) {
+	data, err := os.ReadFile(path)
+	if err != nil {
 		return nil, err
 	}
 
-	var suite model.TestSuite
-	if err := v.Unmarshal(&suite); err != nil {
+	var suite model.SuiteFile
+	if err = yaml.Unmarshal(data, &suite); err != nil {
+		return nil, fmt.Errorf("invalid yaml: %w", err)
+	}
+
+	err = validateSuite(&suite)
+	if err != nil {
 		return nil, err
 	}
 
-	for i, _ := range suite.Tests {
-		suite.Tests[i].Request.URL = replaceVars(suite.Tests[i].Request.URL, suite.Env)
-	}
+	applyDefaults(&suite)
+
 	return &suite, nil
-}
-
-func replaceVars(s string, env map[string]string) string {
-	for k, v := range env {
-		placeholder := fmt.Sprintf("{%s}", k)
-		s = strings.ReplaceAll(s, placeholder, v)
-	}
-	return s
 }

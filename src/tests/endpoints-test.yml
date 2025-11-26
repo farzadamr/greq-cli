@@ -1,0 +1,48 @@
+version: "1.0"
+
+env:
+  dev: "https://localhost:8080"
+  prod: "https://api.example.com"
+
+vars:
+  token: "123"
+  user_id: "uuid.."
+
+global:
+  timeout: 5000
+  headers:
+    Content_Type: "application/json"
+    Authorization: "Bearer {{ vars.token }}"
+
+suite:
+  - tag: auth
+    tests:
+      - method: POST
+        path: "/auth/login"
+        body:
+          username: "admin"
+          password: "admin"
+        save:
+          token: "$.token"
+        assert:
+          status: 200
+          contains: ["token", "user_id"]
+  - tag: products
+    tests:
+      - method: GET
+        path: "/products"
+        query:
+          searchKey: "laptop"
+          sort: "MostRecent"
+        assert:
+          status: 200
+          contains: ["title", "description"]
+      - method: POST
+        path: "/products"
+        body:
+          title: "Asus TUF"
+          description: "Gaming laptop with high performance"
+        assert:
+          status: 201
+          contains: ["id", "title", "description"]
+ 

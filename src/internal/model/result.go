@@ -1,14 +1,14 @@
 package model
 
-import (
-	"time"
-)
+import "time"
+
+type SuiteResult struct {
+	Tag         string
+	TestsResult []TestResult
+}
 
 type TestResult struct {
-	Name     string
-	Passed   bool
-	Time     time.Duration
-	Response HTTPResponse
-	Expect   Expectation
-	Err      *error
+	HTTPResponse HTTPResponse
+	Assertion    Assert
+	Duration     time.Duration
 }
