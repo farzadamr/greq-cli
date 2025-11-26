@@ -7,6 +7,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
+var summery bool
 var runCmd = &cobra.Command{
 	Use:   "run [file]",
 	Short: "Run API test suite",
@@ -19,8 +20,10 @@ var runCmd = &cobra.Command{
 		if err != nil {
 			//handle ui error
 		}
-		testCount := len(suite.Tests)
-		ui.RenderHeader(file, testCount, "dev")
+		if !summery {
+			testCount := len(suite.Tests)
+			ui.RenderHeader(file, testCount, "dev")
+		}
 
 		// 2. Run HTTP requests
 		results := executor.RunSuite(suite)
@@ -29,6 +32,10 @@ var runCmd = &cobra.Command{
 		}
 
 		//3. UI Render
+		if summery {
+			ui.RenderTestsResultSummery(results)
+			return nil
+		}
 		ui.RenderTestsResult(results)
 		return nil
 	},

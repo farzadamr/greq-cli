@@ -15,5 +15,5 @@ var (
 		PurpleText: lipgloss.NewStyle().Foreground(lipgloss.Color("#ce08ffff")),
 	}
 
-	Line = "\n________________________\n"
+	Line = "________________________\n"
 )
