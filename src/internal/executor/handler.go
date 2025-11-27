@@ -7,7 +7,7 @@ import (
 )
 
 func HandleSuite(sf *model.SuiteFile, env string) (*[]model.SuiteResult, error) {
-	var testResults []model.TestResult
+	var testResults []model.TestResponse
 	var result []model.SuiteResult
 	for _, suite := range sf.Suites {
 		for _, t := range suite.Tests {
@@ -28,15 +28,15 @@ func HandleSuite(sf *model.SuiteFile, env string) (*[]model.SuiteResult, error) 
 
 			duration := time.Since(startTime)
 
-			testResults = append(testResults, model.TestResult{
+			testResults = append(testResults, model.TestResponse{
 				HTTPResponse: *httpResponse,
 				Assertion:    t.Assert,
 				Duration:     duration,
 			})
 		}
 		result = append(result, model.SuiteResult{
-			Tag:         suite.Tag,
-			TestsResult: testResults,
+			Tag:            suite.Tag,
+			TestsResponses: testResults,
 		})
 	}
 	return &result, nil

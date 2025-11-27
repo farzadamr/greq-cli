@@ -6,6 +6,8 @@ import (
 )
 
 type HTTPResponse struct {
+	Method     string
+	Path       string
 	StatusCode int
 	Headers    http.Header
 	Body       []byte

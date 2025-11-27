@@ -65,6 +65,8 @@ func DoRequest(req *model.HttpRequest) (*model.HTTPResponse, error) {
 	}
 
 	return &model.HTTPResponse{
+		Path:       req.Path,
+		Method:     req.Method,
 		StatusCode: response.StatusCode,
 		Headers:    response.Header,
 		Body:       respBody,
